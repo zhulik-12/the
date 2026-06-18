@@ -22,6 +22,18 @@ Stripe secret keys must stay on the server. Do not commit them to GitHub and do 
 
 The storefront uses KZT prices as whole tenge and sends Stripe amounts in minor units with `STRIPE_AMOUNT_MULTIPLIER=100` by default.
 
+## Vercel
+
+The repository includes `api/create-checkout-session.js` for Vercel serverless deployment. Add these environment variables in Vercel Project Settings:
+
+```bash
+STRIPE_SECRET_KEY=sk_test_replace_me
+STRIPE_CURRENCY=kzt
+STRIPE_AMOUNT_MULTIPLIER=100
+```
+
+Do not use GitHub Pages for Stripe checkout, because GitHub Pages cannot run the server-side API route.
+
 ## Supabase
 
 The browser app uses only the public `anon` key from `supabase-config.js`.
