@@ -1,0 +1,6 @@
+.env
+.env.*
+!.env.example
+supabase-service-role*.js
+assets/qa-*.png
+assets/the-hero.png

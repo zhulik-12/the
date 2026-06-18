@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>THE - премиальный интернет-магазин одежды</title>
+    <meta
+      name="description"
+      content="THE - современный интернет-магазин премиальной одежды: лаконичные силуэты, новые коллекции, быстрая покупка, доставка и онлайн-поддержка."
+    />
+    <meta name="keywords" content="THE, премиальная одежда, Zara style, Massimo Dutti, COS, каталог одежды, fashion Kazakhstan" />
+    <meta property="og:title" content="THE - Premium Fashion Store" />
+    <meta property="og:description" content="Минималистичная одежда, новые поступления и curated wardrobe для города." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="assets/the-hero.jpg" />
+    <meta name="theme-color" content="#f8f7f4" />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="preload" as="image" href="assets/the-hero.jpg" />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Store",
+        "name": "THE",
+        "description": "Premium minimalist clothing store",
+        "currenciesAccepted": "KZT",
+        "paymentAccepted": "Visa, Mastercard, Apple Pay, Kaspi",
+        "sameAs": ["https://instagram.com", "https://tiktok.com"]
+      }
+    </script>
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="header" id="header">
+        <a class="brand" href="#home" aria-label="THE home">THE</a>
+        <button class="mobile-menu" type="button" aria-label="Menu" data-menu-toggle>
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="nav" aria-label="Main navigation" data-nav>
+          <a href="#home" data-route-link="home" data-i18n="navHome">Главная</a>
+          <a href="#catalog" data-route-link="catalog" data-i18n="navCatalog">Каталог</a>
+          <a href="#catalog?tag=new" data-i18n="navNew">Новинки</a>
+          <a href="#catalog?tag=sale" data-i18n="navSale">Акции</a>
+          <a href="#account" data-route-link="account" data-i18n="navAccount">Кабинет</a>
+        </nav>
+        <div class="header-actions">
+          <label class="search-pill" aria-label="Search products">
+            <span class="search-icon" aria-hidden="true"></span>
+            <input id="globalSearch" type="search" autocomplete="off" data-i18n-placeholder="searchPlaceholder" placeholder="Поиск" />
+          </label>
+          <select id="languageSelect" class="lang-select" aria-label="Language">
+            <option value="ru">RU</option>
+            <option value="en">EN</option>
+            <option value="kk">KZ</option>
+          </select>
+          <button class="icon-button" type="button" aria-label="Favorites" data-route="account" data-tab="favorites">
+            <span aria-hidden="true">♡</span>
+            <span class="badge" id="favoriteCount">0</span>
+          </button>
+          <button class="icon-button" type="button" aria-label="Cart" data-route="cart">
+            <span aria-hidden="true">Bag</span>
+            <span class="badge" id="cartCount">0</span>
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section class="view view-home is-active" data-view="home">
+          <article class="hero reveal">
+            <picture>
+              <img src="assets/the-hero.jpg" width="1774" height="887" alt="THE fashion editorial" fetchpriority="high" />
+            </picture>
+            <div class="hero-copy">
+              <p class="eyebrow" data-i18n="heroEyebrow">New season edit</p>
+              <h1>THE</h1>
+              <p data-i18n="heroText">Точная база для выразительного гардероба.</p>
+              <a class="primary-button" href="#catalog" data-i18n="heroCta">Перейти в каталог</a>
+            </div>
+          </article>
+
+          <section class="section reveal" id="new">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow" data-i18n="newEyebrow">Fresh drop</p>
+                <h2 data-i18n="newTitle">Новые поступления</h2>
+              </div>
+              <a href="#catalog?tag=new" class="text-link" data-i18n="showAll">Смотреть все</a>
+            </div>
+            <div class="product-row" id="newArrivals"></div>
+          </section>
+
+          <section class="section split-promo reveal">
+            <article class="promo-panel">
+              <img
+                src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=78"
+                alt="Minimal clothing rail"
+                loading="lazy"
+              />
+              <div>
+                <p class="eyebrow" data-i18n="promoEyebrow">Private sale</p>
+                <h2 data-i18n="promoTitle">До -30% на шерсть и трикотаж</h2>
+                <a href="#catalog?tag=sale" class="light-button" data-i18n="promoCta">Выбрать</a>
+              </div>
+            </article>
+            <article class="editorial-card">
+              <p class="eyebrow" data-i18n="editEyebrow">Wardrobe note</p>
+              <h2 data-i18n="editTitle">Спокойные силуэты, которые работают каждый день.</h2>
+              <p data-i18n="editText">Соберите капсулу из пальто, рубашек, трикотажа и точных аксессуаров.</p>
+            </article>
+          </section>
+
+          <section class="section reveal">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow" data-i18n="popularEyebrow">Most wanted</p>
+                <h2 data-i18n="popularTitle">Популярные товары</h2>
+              </div>
+              <a href="#catalog?sort=popular" class="text-link" data-i18n="shopPopular">К популярным</a>
+            </div>
+            <div class="product-grid compact" id="popularProducts"></div>
+          </section>
+
+          <section class="reviews-section section reveal">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow" data-i18n="reviewsEyebrow">Client notes</p>
+                <h2 data-i18n="reviewsTitle">Отзывы покупателей</h2>
+              </div>
+            </div>
+            <div class="reviews-grid" id="reviewsGrid"></div>
+          </section>
+
+          <section class="subscribe section reveal">
+            <div>
+              <p class="eyebrow" data-i18n="subscribeEyebrow">THE letter</p>
+              <h2 data-i18n="subscribeTitle">Ранний доступ к новым коллекциям.</h2>
+            </div>
+            <form id="subscribeForm" class="subscribe-form">
+              <input type="email" required data-i18n-placeholder="emailPlaceholder" placeholder="Email" />
+              <button type="submit" data-i18n="subscribeCta">Подписаться</button>
+            </form>
+          </section>
+        </section>
+
+        <section class="view" data-view="catalog">
+          <div class="catalog-hero reveal">
+            <div>
+              <p class="eyebrow" data-i18n="catalogEyebrow">Collection</p>
+              <h1 data-i18n="catalogTitle">Каталог THE</h1>
+            </div>
+            <p data-i18n="catalogLead">Премиальные базовые вещи, верхняя одежда и аксессуары в спокойной палитре.</p>
+          </div>
+          <div class="catalog-layout">
+            <aside class="filters" id="filtersPanel">
+              <div class="filter-head">
+                <h2 data-i18n="filtersTitle">Фильтры</h2>
+                <button type="button" class="text-button" id="resetFilters" data-i18n="resetFilters">Сбросить</button>
+              </div>
+              <label>
+                <span data-i18n="filterCategory">Категория</span>
+                <select id="categoryFilter"></select>
+              </label>
+              <label>
+                <span data-i18n="filterSize">Размер</span>
+                <select id="sizeFilter"></select>
+              </label>
+              <label>
+                <span data-i18n="filterColor">Цвет</span>
+                <select id="colorFilter"></select>
+              </label>
+              <label>
+                <span data-i18n="filterBrand">Бренд</span>
+                <select id="brandFilter"></select>
+              </label>
+              <label>
+                <span data-i18n="filterPrice">Цена до</span>
+                <input id="priceFilter" type="range" min="30000" max="180000" step="5000" value="180000" />
+                <strong id="priceValue"></strong>
+              </label>
+            </aside>
+            <section class="catalog-results">
+              <div class="toolbar">
+                <button class="filter-toggle" type="button" data-filter-toggle data-i18n="filtersTitle">Фильтры</button>
+                <span id="resultCount"></span>
+                <label>
+                  <span data-i18n="sortBy">Сортировка</span>
+                  <select id="sortSelect">
+                    <option value="popular" data-i18n="sortPopular">Популярность</option>
+                    <option value="priceAsc" data-i18n="sortPriceAsc">Цена: ниже</option>
+                    <option value="priceDesc" data-i18n="sortPriceDesc">Цена: выше</option>
+                    <option value="new" data-i18n="sortNew">Новизна</option>
+                  </select>
+                </label>
+              </div>
+              <div class="product-grid" id="catalogGrid"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" data-view="product">
+          <article class="product-page" id="productPage"></article>
+        </section>
+
+        <section class="view" data-view="cart">
+          <div class="page-head reveal">
+            <p class="eyebrow" data-i18n="cartEyebrow">Shopping bag</p>
+            <h1 data-i18n="cartTitle">Корзина</h1>
+          </div>
+          <div class="cart-layout">
+            <div class="cart-list" id="cartList"></div>
+            <aside class="cart-summary">
+              <h2 data-i18n="summaryTitle">Итого</h2>
+              <form id="promoForm" class="promo-form">
+                <input id="promoInput" type="text" data-i18n-placeholder="promoPlaceholder" placeholder="Промокод" />
+                <button type="submit" data-i18n="applyPromo">Применить</button>
+              </form>
+              <div class="summary-lines" id="summaryLines"></div>
+              <button class="primary-button full" type="button" data-route="checkout" data-i18n="checkoutCta">Оформить заказ</button>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" data-view="checkout">
+          <div class="page-head reveal">
+            <p class="eyebrow" data-i18n="checkoutEyebrow">Checkout</p>
+            <h1 data-i18n="checkoutTitle">Оформление заказа</h1>
+          </div>
+          <form id="checkoutForm" class="checkout-grid">
+            <section class="checkout-card">
+              <h2 data-i18n="deliveryTitle">Доставка</h2>
+              <label>
+                <span data-i18n="nameLabel">Имя</span>
+                <input required name="name" autocomplete="name" />
+              </label>
+              <label>
+                <span data-i18n="phoneLabel">Телефон</span>
+                <input required name="phone" autocomplete="tel" />
+              </label>
+              <label>
+                <span data-i18n="addressLabel">Адрес</span>
+                <input required name="address" autocomplete="street-address" />
+              </label>
+              <label>
+                <span data-i18n="cityLabel">Город</span>
+                <input required name="city" autocomplete="address-level2" />
+              </label>
+            </section>
+            <section class="checkout-card">
+              <h2 data-i18n="paymentTitle">Оплата</h2>
+              <label class="radio-line">
+                <input type="radio" name="payment" value="card" checked />
+                <span>Visa / Mastercard</span>
+              </label>
+              <label class="radio-line">
+                <input type="radio" name="payment" value="apple" />
+                <span>Apple Pay</span>
+              </label>
+              <label class="radio-line">
+                <input type="radio" name="payment" value="kaspi" />
+                <span>Kaspi Pay</span>
+              </label>
+              <div class="mini-summary" id="checkoutSummary"></div>
+              <button class="primary-button full" type="submit" data-i18n="confirmOrder">Подтвердить заказ</button>
+            </section>
+          </form>
+        </section>
+
+        <section class="view" data-view="account">
+          <div class="page-head reveal">
+            <p class="eyebrow" data-i18n="accountEyebrow">Private room</p>
+            <h1 data-i18n="accountTitle">Личный кабинет</h1>
+          </div>
+          <div class="account-layout">
+            <div class="tabs" role="tablist">
+              <button class="tab is-active" type="button" data-account-tab="orders" data-i18n="ordersTab">История заказов</button>
+              <button class="tab" type="button" data-account-tab="favorites" data-i18n="favoritesTab">Избранное</button>
+              <button class="tab" type="button" data-account-tab="profile" data-i18n="profileTab">Профиль</button>
+            </div>
+            <div class="account-panel" id="accountPanel"></div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div>
+          <a class="brand footer-brand" href="#home">THE</a>
+          <p data-i18n="footerText">Premium everyday wardrobe.</p>
+        </div>
+        <div class="footer-links">
+          <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>
+          <a href="https://tiktok.com" target="_blank" rel="noreferrer">TikTok</a>
+          <a href="#catalog" data-i18n="footerCatalog">Каталог</a>
+          <a href="#checkout" data-i18n="footerDelivery">Доставка</a>
+        </div>
+      </footer>
+    </div>
+
+    <button class="chat-toggle" type="button" aria-label="Support chat" data-chat-toggle>Chat</button>
+    <aside class="chat-widget" id="chatWidget" aria-live="polite">
+      <div class="chat-head">
+        <strong data-i18n="chatTitle">THE support</strong>
+        <button type="button" aria-label="Close chat" data-chat-toggle>×</button>
+      </div>
+      <div class="chat-body" id="chatBody">
+        <p data-i18n="chatGreeting">Здравствуйте. Подскажем размер, наличие и доставку.</p>
+      </div>
+      <form id="chatForm" class="chat-form">
+        <input type="text" required data-i18n-placeholder="chatPlaceholder" placeholder="Ваш вопрос" />
+        <button type="submit" aria-label="Send">→</button>
+      </form>
+    </aside>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="supabase-config.js" defer></script>
+    <script src="app.js" defer></script>
+  </body>
+</html>
