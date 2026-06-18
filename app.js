@@ -273,9 +273,14 @@ const i18n = {
     addressLabel: "Адрес",
     cityLabel: "Город",
     paymentTitle: "Оплата",
-    confirmOrder: "Подтвердить заказ",
+    confirmOrder: "Оплатить через Stripe",
     saveProfile: "Сохранить профиль",
     profileSaved: "Профиль сохранен",
+    stripeRedirect: "Переходим к оплате Stripe...",
+    stripeUnavailable: "Stripe checkout не запущен. Запустите сервер с STRIPE_SECRET_KEY.",
+    paymentPending: "Ожидает оплаты",
+    paymentSuccess: "Оплата прошла успешно",
+    paymentCancelled: "Оплата отменена, корзина сохранена",
     accountEyebrow: "Private room",
     accountTitle: "Личный кабинет",
     ordersTab: "История заказов",
@@ -382,9 +387,14 @@ const i18n = {
     addressLabel: "Address",
     cityLabel: "City",
     paymentTitle: "Payment",
-    confirmOrder: "Confirm order",
+    confirmOrder: "Pay with Stripe",
     saveProfile: "Save profile",
     profileSaved: "Profile saved",
+    stripeRedirect: "Redirecting to Stripe Checkout...",
+    stripeUnavailable: "Stripe checkout is not running. Start the server with STRIPE_SECRET_KEY.",
+    paymentPending: "Pending payment",
+    paymentSuccess: "Payment completed",
+    paymentCancelled: "Payment cancelled, bag saved",
     accountEyebrow: "Private room",
     accountTitle: "Account",
     ordersTab: "Orders",
@@ -491,9 +501,14 @@ const i18n = {
     addressLabel: "Мекенжай",
     cityLabel: "Қала",
     paymentTitle: "Төлем",
-    confirmOrder: "Тапсырысты растау",
+    confirmOrder: "Stripe арқылы төлеу",
     saveProfile: "Профильді сақтау",
     profileSaved: "Профиль сақталды",
+    stripeRedirect: "Stripe төлеміне өтеміз...",
+    stripeUnavailable: "Stripe checkout қосылмаған. Серверді STRIPE_SECRET_KEY арқылы іске қосыңыз.",
+    paymentPending: "Төлем күтуде",
+    paymentSuccess: "Төлем сәтті өтті",
+    paymentCancelled: "Төлем тоқтатылды, себет сақталды",
     accountEyebrow: "Private room",
     accountTitle: "Жеке кабинет",
     ordersTab: "Тапсырыстар",
@@ -711,6 +726,26 @@ function saveChatMessage(message, direction) {
   return supabaseRequest("chat_messages", {
     body: { customer_id: state.customerId, message, direction },
   });
+}
+
+async function startStripeCheckout(order, customer) {
+  const response = await fetch("/api/create-checkout-session", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      orderId: order.id,
+      customer,
+      items: state.cart.map((item) => ({
+        product_id: item.id,
+        qty: item.qty,
+      })),
+    }),
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.url) {
+    throw new Error(data.error || t("stripeUnavailable"));
+  }
+  return data.url;
 }
 
 function showToast(message) {
@@ -1122,6 +1157,7 @@ function navigateFromHash() {
   const hash = window.location.hash.replace("#", "") || "home";
   const [routePart, queryString] = hash.split("?");
   state.tag = "";
+  const params = new URLSearchParams(queryString || "");
   if (routePart.startsWith("product=")) {
     state.route = "product";
     state.selectedProductId = routePart.split("=")[1];
@@ -1132,7 +1168,6 @@ function navigateFromHash() {
   } else {
     state.route = routePart || "home";
   }
-  const params = new URLSearchParams(queryString || "");
   if (params.get("tag") === "new") {
     state.tag = "new";
     state.sort = "new";
@@ -1144,6 +1179,17 @@ function navigateFromHash() {
   }
   if (params.get("sort")) state.sort = params.get("sort");
   showRoute();
+  if (params.get("payment") === "success") {
+    state.cart = [];
+    state.promo = "";
+    localStorage.removeItem("the_pending_checkout_order");
+    persist();
+    render();
+    showToast(t("paymentSuccess"));
+  }
+  if (params.get("payment") === "cancelled") {
+    showToast(t("paymentCancelled"));
+  }
 }
 
 function showRoute() {
@@ -1341,16 +1387,19 @@ function attachEvents() {
       id: `THE-${Math.floor(1000 + Math.random() * 9000)}`,
       date: new Date().toLocaleDateString("ru-RU"),
       total: totals.total,
-      status: "Confirmed",
+      status: t("paymentPending"),
     };
-    await saveOrderRemote(order, customer, totals, items);
-    state.orders.unshift(order);
-    state.cart = [];
-    state.promo = "";
-    persist();
-    render();
-    showToast(`${t("orderDone")}: ${order.id}`);
-    window.location.hash = "account";
+    try {
+      const checkoutUrl = await startStripeCheckout(order, customer);
+      await saveOrderRemote(order, customer, totals, items);
+      state.orders.unshift(order);
+      localStorage.setItem("the_pending_checkout_order", JSON.stringify({ order, cart: state.cart, promo: state.promo }));
+      persist();
+      showToast(t("stripeRedirect"));
+      window.location.href = checkoutUrl;
+    } catch (error) {
+      showToast(error.message || t("stripeUnavailable"));
+    }
   });
 
   $("#chatForm").addEventListener("submit", (event) => {

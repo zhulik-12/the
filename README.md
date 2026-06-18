@@ -5,10 +5,22 @@ Premium responsive fashion storefront with catalog, product details, cart, check
 ## Run locally
 
 ```bash
-python3 -m http.server 4173
+npm start
 ```
 
 Open `http://localhost:4173`.
+
+## Stripe
+
+Stripe Checkout is handled by `server.js`, not by the browser app. Start the server with a real Stripe secret or restricted key in the environment:
+
+```bash
+STRIPE_SECRET_KEY=sk_test_replace_me npm start
+```
+
+Stripe secret keys must stay on the server. Do not commit them to GitHub and do not put them in `app.js`, `index.html`, or `supabase-config.js`.
+
+The storefront uses KZT prices as whole tenge and sends Stripe amounts in minor units with `STRIPE_AMOUNT_MULTIPLIER=100` by default.
 
 ## Supabase
 
